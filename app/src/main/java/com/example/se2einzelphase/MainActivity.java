@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //aufgabe 2.1
         Button btn = findViewById(R.id.button);
         TextInputEditText input = findViewById(R.id.textInputEditText);
         TextView text = findViewById(R.id.textView);
@@ -76,5 +77,43 @@ public class MainActivity extends AppCompatActivity {
                 thread.start();
             }
         });
+        //Aufgabe 2.2
+        Button btn2 = findViewById(R.id.button2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mn = input.getText().toString(); // Get the number from the TextInputEditText
+                int qs = quersumme(mn);
+
+                // Update the TextView on the main thread
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        text.setText(binary(qs));
+                    }
+                });
+            }
+            private int quersumme(String number) {
+                int sum = 0;
+                for (int i = 0; i < number.length(); i++) {
+                    int digit = Character.getNumericValue(number.charAt(i));
+                        sum += digit;
+                }
+                return sum;
+            }
+            private String binary(int number){
+                StringBuilder binary = new StringBuilder();
+                int quotient = number;
+
+                while (quotient > 0) {
+                    int r = quotient % 2;
+                    binary.append(r);
+                    quotient = quotient / 2;
+                }
+                    binary.reverse();
+                return binary.toString();
+            }
+        });
+
     }
 }
